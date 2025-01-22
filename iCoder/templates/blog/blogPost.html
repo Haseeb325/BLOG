@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block title %} Home {% endblock title %}
+
+{% block body %}
+{% load humanize %}
+{% load extras %}
+<div class="container">
+
+    <h1>BlogPost</h1>
+    <h2>{{post.title | safe}}</h2>
+    <p> Blog By : {{post.author}} Published at {{post.timeStamp}}</p>
+    <p>{{post.content | safe}}</p>
+</div>
+
+<div class="container">
+
+    <h2>Comments ({{comments.count}})</h2>
+    <div class="my-2">
+        {% if user.is_authenticated %}
+        <form action="{% url 'postComment' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="exampleInputEmil">Post Your Comment</label>
+                <input type="text" class="form-control" name="comment" placeholder="Enter your comment here">
+
+            </div>
+            <input type="hidden" name="postSno" value="{{ post.sno }}">
+            <input type="hidden" name="parentSno" value="">
+            <button class="btn btn-primary" type="submit">Submit Comment</button>
+        </form>
+        {% else %}
+        <h5>Please Login To Post a comment</h5>
+        {% endif %}
+
+    </div>
+
+    {% for comment in comments %}
+
+    <div class="row my-2 mx-0">
+        <div class="col-md-1 "> Image Here </div>
+        <div class="col-md-11 "> {{comment.user.username}} <span class="badge badge-secondary">
+                {{comment.timeStamp | naturaltime}}</span> <br>
+
+            <div> {{comment.comment}} </div>
+            <div class="reply my-2 mx-0">
+                {% if user.is_authenticated %}
+                <button class="btn btn-primary btn-sm" type="button" data-toggle="collapse"
+                    data-target="#replyBox{{comment.sno}}" aria-expanded="false"
+                    aria-controls="replyBox{{comment.sno}}">Reply</button>
+                
+
+                <div class="collapse my-2" id="replyBox{{comment.sno}}">
+                    <div class="card card-body">
+                        <form action="{% url 'postComment' %}" method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="exampleInputEmil">Post Reply</label>
+                                <input type="text" class="form-control" name="comment"
+                                    placeholder="Enter your comment here">
+                                <input type="hidden" name="parentSno" value="{{comment.sno}}">
+
+                            </div>
+                            <input type="hidden" name="postSno" value="{{ post.sno }}">
+                            <button class="btn btn-primary" type="submit">Submit Comment</button>
+                        </form>
+
+                    </div>
+                </div>
+                {% else %}
+                <button class="btn btn-primary btn-sm" type="button" data-toggle="collapse"
+                data-target="#replyBox{{comment.sno}}" aria-expanded="false"
+                aria-controls="replyBox{{comment.sno}}" disabled>Login to reply</button>
+            
+                {% endif %}
+                <div class="replies mx-4   my-2">
+                    {% for reply in replyDict|get_val:comment.sno %} <!--   template filters -->
+
+                    <div class="row my-2">
+
+                        <div class="col-md-1  my-1"> Image Here </div>
+                        <div class="col-md-11 my-1">
+                            {{comment.user.username}} <span class="badge badge-secondary">
+                                {{comment.timeStamp | naturaltime}}</span> <br>
+                            {{reply.comment}}
+                            
+                        </div>
+                    </div>
+
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endfor %}
+
+
+</div>
+
+{% endblock body %}

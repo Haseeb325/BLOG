@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %} Contact {% endblock title %}
+{% block contactactive %} active {% endblock contactactive %}
+{% block body %} 
+<div class="container">
+
+
+
+
+
+
+
+<div class="container mt-5">
+
+    <form action="#" class="col-8 mx-auto card p-3 shadow-lg" method="post"  >
+        {% csrf_token %}
+        {% if messages %}
+      <div class="alert alert-primary" role="alert">
+        {% for message in messages %}
+        {{message}}
+
+        {% endfor %}
+      </div>
+
+      {% endif %}
+        <h2>Contact Us Regarding Any Query</h2>
+        <hr>
+        <div class="mb-3">
+          <label for="name" class="form-label"> Name</label>
+          <input placeholder="Enter your name" type="text" required name="name"  class="form-control" id="name">
+          
+        </div>
+        <div class="mb-3">
+          <label for="name" class="form-label"> Email</label>
+          <input placeholder="Enter your Email" type="email" required name="email"  class="form-control" id="email">
+          
+        </div>
+        <div class="mb-3">
+          <label for="phone" class="form-label"> Phone</label>
+          <input placeholder="Enter your Phone" type="tel" required name="phone"  class="form-control" id="phone">
+          
+        </div>
+        <div class="mb-3">
+            <label for="content" class="form-label">How May We Help You?</label>
+            <textarea class="form-control" required name="content"  id="content"></textarea>
+    
+        </div>
+     
+     
+        <button type="submit" class="btn btn-success">Submit</button>
+      </form>
+
+
+
+
+
+</div>
+
+{% endblock body %}

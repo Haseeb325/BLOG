@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %} search {% endblock title %}
+{% block blogactive %} active {% endblock blogactive %}
+
+{% block body %}
+
+<div class="container my-3">
+    <div class="jumbotron">
+        <h1 class="display-4">Welcome To ICoder</h1>
+        <p class="lead">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
+        <hr class="my-4">
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam numquam non amet.</p>
+        <a href="/blog" class="btn btn-primary btn-lg"> Go To Blog</a>
+    </div>
+</div>
+{% if messages %}
+<div class="alert alert-primary" role="alert">
+  {% for message in messages %}
+  {{message}}
+
+  {% endfor %}
+</div>
+
+{% endif %}
+
+<h1 style="display: flex ; justify-content: center;">Search Results By ICoder</h1>
+
+{% if allPosts|length < 1 %}
+<p class="lead"  style="display: flex ; justify-content: center;">No Search Results For {{search}} try another </p>
+{% endif %}
+<div style="display: flex; ">
+{% for post in allPosts %}
+    <div class="container mt-3 " style="height: 20vh;">
+
+        <div class=" mb-2">
+
+            <div class="col-md-3">
+                <div
+                  class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                    <div class="col p-4 d-flex flex-column position-static">
+
+                        <strong class="mb-2 text-primary-emphasis">{{post.title}}</strong>
+                        <h3 class="mb-0">Featured post</h3>
+                        <h4>{{post.author}}</h4>
+                        <div class="mb-1 text-body-secondary">Published On {{post.timeStamp}}</div>
+                        <p class="card-text mb-auto">{{post.content | truncatechars:4}}</p>
+                        <a href="/blog/{{post.slug}}/" class="icon-link gap-1 icon-link-hover stretched-link">
+                            Continue reading
+                           
+                        </a>
+
+                      
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        <div class="row mb-2">
+
+
+
+        </div>
+        {% endfor %}
+    </div>
+        {% endblock body %}
